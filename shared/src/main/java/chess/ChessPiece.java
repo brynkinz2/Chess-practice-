@@ -183,13 +183,38 @@ public class ChessPiece {
             for (int[] direction : directions) {
                 int checkRow = currRow + direction[0];
                 int checkCol = currCol + direction[1];
+                if (checkRow < 1 || checkCol < 1 || checkRow > 8 || checkCol > 8) {
+                    continue;
+                }
 
                 ChessPiece checkPiece = board.getPiece(new ChessPosition(checkRow, checkCol));
                 if (direction[1] == 0) {
                     if (checkPiece == null) {
-                        moves.add(new ChessMove(myPosition, new ChessPosition(checkRow, checkCol), null));
+                        if (canPromote) {
+                            moves.add(new ChessMove(myPosition, new ChessPosition(checkRow, checkCol), PieceType.QUEEN));
+                            moves.add(new ChessMove(myPosition, new ChessPosition(checkRow, checkCol), PieceType.BISHOP));
+                            moves.add(new ChessMove(myPosition, new ChessPosition(checkRow, checkCol), PieceType.KNIGHT));
+                            moves.add(new ChessMove(myPosition, new ChessPosition(checkRow, checkCol), PieceType.ROOK));
+                        }
+                        else {
+                            moves.add(new ChessMove(myPosition, new ChessPosition(checkRow, checkCol), null));
+                        }
                         if (firstMove && board.getPiece(new ChessPosition(checkRow + direction[0], checkCol)) == null) {
                             moves.add(new ChessMove(myPosition, new ChessPosition(checkRow + direction[0], checkCol), null));
+                        }
+                    }
+                }
+                else {
+                    if (checkPiece == null) { continue; }
+                    if (checkPiece.getTeamColor() != color) {
+                        if (canPromote) {
+                            moves.add(new ChessMove(myPosition, new ChessPosition(checkRow, checkCol), PieceType.QUEEN));
+                            moves.add(new ChessMove(myPosition, new ChessPosition(checkRow, checkCol), PieceType.BISHOP));
+                            moves.add(new ChessMove(myPosition, new ChessPosition(checkRow, checkCol), PieceType.KNIGHT));
+                            moves.add(new ChessMove(myPosition, new ChessPosition(checkRow, checkCol), PieceType.ROOK));
+                        }
+                        else {
+                            moves.add(new ChessMove(myPosition, new ChessPosition(checkRow, checkCol), null));
                         }
                     }
                 }
