@@ -56,11 +56,27 @@ public class ChessPiece {
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         List<ChessMove> moves = new ArrayList<>();
-        if (getPieceType() == PieceType.KING) {}
+        int currRow = myPosition.getRow();
+        int currCol = myPosition.getColumn();
+
+        if (getPieceType() == PieceType.KING) {
+            int directions[][] = {{-1,1}, {0,1}, {1,1}, {1,0}, {1,-1}, {0,-1}, {-1,-1}, {-1,0}};
+
+            for (int[] direction : directions) {
+                if (currRow <= 0 || currCol <= 0 || currRow >= 8 || currCol >= 8) {
+                    continue;
+                }
+                int checkRow = currRow + direction[0];
+                int checkCol = currCol + direction[1];
+
+                ChessPiece checkPiece = board.getPiece(new ChessPosition(checkRow, checkCol));
+                if (checkPiece == null || checkPiece.getTeamColor() != color) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(checkRow, checkCol), null));
+                }
+            }
+        }
         else if (getPieceType() == PieceType.QUEEN) {}
         else if (getPieceType() == PieceType.BISHOP) {
-            int currRow = myPosition.getRow();
-            int currCol = myPosition.getColumn();
             int directions[][] = {{-1, 1}, {1,1}, {1,-1}, {-1,-1}};
 
             for (int[] direction : directions) {
