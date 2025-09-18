@@ -63,11 +63,11 @@ public class ChessPiece {
             int directions[][] = {{-1,1}, {0,1}, {1,1}, {1,0}, {1,-1}, {0,-1}, {-1,-1}, {-1,0}};
 
             for (int[] direction : directions) {
-                if (currRow <= 0 || currCol <= 0 || currRow >= 8 || currCol >= 8) {
-                    continue;
-                }
                 int checkRow = currRow + direction[0];
                 int checkCol = currCol + direction[1];
+                if (checkRow < 1 || checkCol < 1 || checkRow > 8 || checkCol > 8) {
+                    continue;
+                }
 
                 ChessPiece checkPiece = board.getPiece(new ChessPosition(checkRow, checkCol));
                 if (checkPiece == null || checkPiece.getTeamColor() != color) {
@@ -124,7 +124,22 @@ public class ChessPiece {
             }
 
         }
-        else if (getPieceType() == PieceType.KNIGHT) {}
+        else if (getPieceType() == PieceType.KNIGHT) {
+            int directions[][] = {{1,-2}, {2,-1}, {2,1}, {1,2}, {-1,2}, {-2, 1}, {-2,-1}, {-1,-2}};
+
+            for (int[] direction : directions) {
+                int checkRow = currRow + direction[0];
+                int checkCol = currCol + direction[1];
+                if (checkRow < 1 || checkCol < 1 || checkRow > 8 || checkCol > 8) {
+                    continue;
+                }
+
+                ChessPiece checkPiece = board.getPiece(new ChessPosition(checkRow, checkCol));
+                if (checkPiece == null || checkPiece.getTeamColor() != color) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(checkRow, checkCol), null));
+                }
+            }
+        }
         else if (getPieceType() == PieceType.ROOK) {}
         else if (getPieceType() == PieceType.PAWN) {}
         return moves;
