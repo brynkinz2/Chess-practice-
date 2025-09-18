@@ -66,7 +66,7 @@ public class ChessPiece {
                 int checkRow = currRow + direction[0];
                 int checkCol = currCol + direction[1];
 
-                while (checkRow >= 0 && checkCol >= 0 && checkRow < 8 && checkCol < 8) {
+                while (checkRow > 0 && checkCol > 0 && checkRow <= 8 && checkCol <= 8) {
                     ChessPiece checkPiece = board.getPiece(new ChessPosition(checkRow, checkCol));
                     if (checkPiece == null) {
                         moves.add(new ChessMove(myPosition, new ChessPosition(checkRow, checkCol), null));
@@ -75,6 +75,8 @@ public class ChessPiece {
                         moves.add(new ChessMove(myPosition, new ChessPosition(checkRow, checkCol), null));
                         break;
                     }
+                    checkRow += direction[0];
+                    checkCol += direction[1];
                 }
             }
 
