@@ -140,7 +140,30 @@ public class ChessPiece {
                 }
             }
         }
-        else if (getPieceType() == PieceType.ROOK) {}
+        else if (getPieceType() == PieceType.ROOK) {
+            int directions[][] = {{-1, 0}, {0,1}, {1,0}, {0,-1}};
+
+            for (int[] direction : directions) {
+                int checkRow = currRow + direction[0];
+                int checkCol = currCol + direction[1];
+
+                while (checkRow > 0 && checkCol > 0 && checkRow <= 8 && checkCol <= 8) {
+                    ChessPiece checkPiece = board.getPiece(new ChessPosition(checkRow, checkCol));
+                    if (checkPiece == null) {
+                        moves.add(new ChessMove(myPosition, new ChessPosition(checkRow, checkCol), null));
+                    }
+                    else if (checkPiece.getTeamColor() != color) {
+                        moves.add(new ChessMove(myPosition, new ChessPosition(checkRow, checkCol), null));
+                        break;
+                    }
+                    else {
+                        break;
+                    }
+                    checkRow += direction[0];
+                    checkCol += direction[1];
+                }
+            }
+        }
         else if (getPieceType() == PieceType.PAWN) {}
         return moves;
     }
